@@ -76,7 +76,7 @@ iwctl station list # Find your station ID
 iwctl station <station> connect <SSID>
 
 # Download the script
-curl -o install.sh <insert after I make a release>
+curl -o install.sh https://raw.githubusercontent.com/Wrayos/arch-install-wrapper/v0.0.1/arch-install.sh
 
 # Execute the script.  -d is the only required argument.
 chmod +x script.sh
@@ -89,7 +89,7 @@ And my usage:
 iwctl station wlan0 connect MySSID
 # Interactive step to supply WiFi password
 
-curl -o install.sh <insert after I make a release>
+curl -o install.sh https://raw.githubusercontent.com/Wrayos/arch-install-wrapper/v0.0.1/arch-install.sh
 chmod +x install.sh
 ./install.sh -q -d /dev/sda -w /dev/nvme0n1p1 -u wrayos -x "cowsay neofetch" # Very important packages!
 # Two interactive steps during install to set root & admin user passwords
