@@ -16,30 +16,6 @@ This is an opinionated Arch Linux configuration - but what does it actually do?
 * systemd-boot is used for the bootloader.
 * The 'wheel' group is enabled for sudo.
 
-## Dual-booting Windows
-
-How Windows handles its ESP can be mildly annoying if you're like me and distrohop all the damn time (thus the reason
-this script exists).
-
-When installing Windows, if it detects an existing ESP on the system, it will install its own boot configuration onto
-that ESP.  That's fine for a lot of use-cases and probably a good default - I just wish it would let me choose.  The 
-problem I face with this approach is that it installs onto my Linux drive, and I routinely wipe & reinstall over that
-entire disk - causing me to lose the Windows bootloader!
-
-My solution to this is to have two disks - one dedicated for Windows, and one dedicated for Linux.  When installing
-Windows I ensure that _only_ its disk is attached, so it can't decide to install its bootloader to the Linux disk ESP.
-
-This result is that I end up with two ESPs on my system - which is fine.  If using GRUB it is able to search all ESPs
-on the system and locate Windows, even if it's on another disk.  Unfortunately systemd-boot does not do this.  It can
-automatically add a Windows entry, but only if it's on the same ESP as systemd-boot.
-
-The workaround I use for this is to _copy_ the Windows bootloader from its ESP onto the Linux ESP.  This way,
-systemd-boot can boot Windows, but if I nuke the Linux drive I still have the original Windows bootloader to fallback
-on.
-
-This installer script supports this workaround by its `-w <partition>` flag.  If supplied it will mount that partition
-and copy the directory at `<partition-mount>/EFI/Microsoft` to `/boot/EFI`.
-
 ## Configurations
 
 There is some amount of customisation you can do by supplying different arguments.  They are:
@@ -95,3 +71,27 @@ chmod +x install.sh
 # Two interactive steps during install to set root & admin user passwords
 reboot
 ```
+
+## Dual-booting Windows
+
+How Windows handles its ESP can be mildly annoying if you're like me and distrohop all the damn time (thus the reason
+this script exists).
+
+When installing Windows, if it detects an existing ESP on the system, it will install its own boot configuration onto
+that ESP.  That's fine for a lot of use-cases and probably a good default - I just wish it would let me choose.  The
+problem I face with this approach is that it installs onto my Linux drive, and I routinely wipe & reinstall over that
+entire disk - causing me to lose the Windows bootloader!
+
+My solution to this is to have two disks - one dedicated for Windows, and one dedicated for Linux.  When installing
+Windows I ensure that _only_ its disk is attached, so it can't decide to install its bootloader to the Linux disk ESP.
+
+This result is that I end up with two ESPs on my system - which is fine.  If using GRUB it is able to search all ESPs
+on the system and locate Windows, even if it's on another disk.  Unfortunately systemd-boot does not do this.  It can
+automatically add a Windows entry, but only if it's on the same ESP as systemd-boot.
+
+The workaround I use for this is to _copy_ the Windows bootloader from its ESP onto the Linux ESP.  This way,
+systemd-boot can boot Windows, but if I nuke the Linux drive I still have the original Windows bootloader to fallback
+on.
+
+This installer script supports this workaround by its `-w <partition>` flag.  If supplied it will mount that partition
+and copy the directory at `<partition-mount>/EFI/Microsoft` to `/boot/EFI`.
