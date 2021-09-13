@@ -13,10 +13,11 @@ Generally I use KDE plasma.  See https://wiki.archlinux.org/title/KDE
 
 Although I use Wayland where possible, still requires Xorg for now.  Also SDDM (plasma default session manager) still doesn't run on Wayland.
 
-Install plasma & all its bulk (see above link for how to install more minimal version)
+Install plasma & all its bulk (see above link for how to install more minimal version).  Then enable sddm.
 
 ```
 sudo pacman -S xorg-server xorg-apps plasma plasma-wayland-session kde-applications
+systemctl enable sddm
 ```
 
-Apparently Pipewire is the default now for plasma!  So no Pipewire configuration needed.
+Apparently Pipewire is the default now for plasma!  So no Pipewire configuration needed.  Reboot and login to the shiny new plasma environment.
