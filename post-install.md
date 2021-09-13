@@ -49,3 +49,10 @@ SDL_IM_MODULE=fcitx
 ```
 
 Go ahead and restart now for safety & consistency.  fcitx5 should autostart with plasma.
+
+Once started up again, open the configtool by right clicking the keyboard icon in the system tray, hit configure.
+I had a weird issue where the `+ Add Input Method...` button (and 2 other buttons) were not visible in the window until I resized it.  Odd.
+Hit that Add Input method button, search for `mozc` and add it.  Click apply.
+Now hitting `ctrl + space` should switch to mozc & ひらがな input - test it in the test box.
+
+So that should be a good basic setup all working now.  Configure mozc itself to change how things are typed (eg direct kana input with a japanese keyboard, instead of romaji/phonetic input). 
