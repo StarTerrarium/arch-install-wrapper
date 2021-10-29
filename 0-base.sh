@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 #
-# This script configures the system to be ready for running pacstrap.  This includes, but is not
-# limited to, partitioning the disk, mounting partitions & selecting fast mirrors.
+# This script configures the system with the base system, ready to be arch-chrooted into to perform
+# further setup.  This includes, but is not limited to, partitioning the disk, mounting partitions,
+# selecting fast mirrors & running initial pacstrap.
 #
 
 # Check network connectivity.  Assuming it's working if this script has been downloaded, but just in case..
@@ -14,3 +15,11 @@ else
 fi
 
 timedatectl set-ntp true
+
+# After connecting to a network, the live ISO will automatically try to rank mirrors
+# via a reflector systemd service.  If wait is enabled then hang until it is inactive.
+until [ "$(systemctl is-active reflector.service)" = 'inactive' ]; do
+  echo "Waiting for Reflector to finish ranking mirrors.."
+  sleep 10
+done
+echo "Reflector has finished ranking mirrors!"
