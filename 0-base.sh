@@ -30,10 +30,18 @@ until [ "$(systemctl is-active reflector.service)" = 'inactive' ]; do
 done
 echo "Reflector has finished ranking mirrors!"
 
+
 if [ "$disk" = 'prompt' ]; then
+  cat <<EOM
+-------------------------------
+  Installation disk selection
+-------------------------------
+Showing list of disks to choose from..
+
+EOM
   lsblk -p
   read -p "Enter the target installation disk: " disk
 fi
 # Ensure target disk exists
 echo "Selected $disk as installation disk"
-stat "$disk"
+stat "$disk" | /dev/null
