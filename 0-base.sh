@@ -85,8 +85,8 @@ partition_char=""
 if [[ "$disk" =~ 'nvme' ]]; then
   partition_char="p"
 fi
-mkfs.fat -F 32 -n "$boot_name" "$disk$partition_char1"
+mkfs.vfat -F 32 -n "$boot_name" "$disk$partition_char"1
 mkfs.btrfs -f -L "$root_name" "$disk$partition_char$root_partition_num"
 if [ "$swap_type" == 'partition' ]; then
-  mkswap -L "$swap_name" "$disk$partition_char2"
+  mkswap -L "$swap_name" "$disk$partition_char"2
 fi
