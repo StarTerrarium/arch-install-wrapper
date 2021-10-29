@@ -45,7 +45,7 @@ EOM
   read -p "Enter the target installation disk: " disk
 fi
 echo -n "Checking that $disk exists.. "
-stat "$disk" > /dev/null 2>&1 || fail
+stat "$disk" > /dev/null 2>&1 || fail "$disk was not found with 'stat' command, ensure you entered the correct path."
 echo "DONE"
 echo "CONTINUING WILL DESTROY ANY DATA ON THE TARGET INSTALLATION DISK"
 read -p "Are you sure you want to continue (Y/N): " confirmation
