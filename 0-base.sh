@@ -12,9 +12,9 @@ cat <<EOM
 EOM
 
 # Check network connectivity.  Assuming it's working if this script has been downloaded, but just in case..
-echo -n "Checking for network connectivity..   "
+echo -n "Checking for network connectivity.. "
 if ping -q -c 1 -W 1 archlinux.org > /dev/null; then
-  echo "Passed"
+  echo "✔"
 else
   echo "Failed.  Try using iwctl to configure your network."
   exit 1
@@ -24,15 +24,18 @@ timedatectl set-ntp true
 
 # After connecting to a network, the live ISO will automatically try to rank mirrors
 # via a reflector systemd service.  If wait is enabled then hang until it is inactive.
+echo -n "Waiting for Reflector to finish ranking mirrors.. "
 until [ "$(systemctl is-active reflector.service)" = 'inactive' ]; do
-  echo "Waiting for Reflector to finish ranking mirrors.."
   sleep 10
+  echo
+  echo -n "Waiting for Reflector to finish ranking mirrors.. "
 done
-echo "Reflector has finished ranking mirrors!"
+echo "✔"
 
 
 if [ "$disk" = 'prompt' ]; then
   cat <<EOM
+
 -------------------------------
   Installation disk selection
 -------------------------------
