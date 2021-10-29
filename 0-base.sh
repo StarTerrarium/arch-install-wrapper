@@ -47,6 +47,11 @@ fi
 echo -n "Checking that $disk exists.. "
 stat "$disk" > /dev/null 2>&1 || fail "$disk was not found with 'stat' command, ensure you entered the correct path."
 echo "DONE"
+
+# Calculate partition sizes
+disk_size=$(lsblk -b --output SIZE -n -d "$disk")
+echo "Total disk size is $disk_size bytes"
+
 echo "CONTINUING WILL DESTROY ANY DATA ON THE TARGET INSTALLATION DISK"
 read -p "Are you sure you want to continue (Y/N): " confirmation
 if [[ ! "$confirmation" =~ ^[yY]$ ]]; then
@@ -55,3 +60,7 @@ if [[ ! "$confirmation" =~ ^[yY]$ ]]; then
 fi
 
 echo "Creating partitions on $disk.."
+# These are spammy so ignore their outputs
+sgdisk --zap-all "$disk"
+sgdisk --set-alignment=2048 --clear "$disk"
+sg
