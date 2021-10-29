@@ -60,14 +60,14 @@ echo "Creating partitions on $disk.."
 sgdisk --zap-all "$disk"
 sgdisk --set-alignment=2048 --clear "$disk"
 echo -n "Creating boot partition of size $boot_size.. "
-sgdisk -n 1:0:+"$boot_size" -t 1:ef00 -c 1:"$boot_name" "$disk" #> /dev/null
+sgdisk -n 1:0:+"$boot_size" -t 1:ef00 -c 1:"$boot_name" "$disk" > /dev/null
 print_done
 
 # Track root partition number, as it will be '2' without a swap partition, but 3 if one was created.
 root_partition_num=2
 if [ "$swap_type" == 'partition' ]; then
   echo -n "Creating swap partition of size $swap_size.. "
-  sgdisk -n 2:0:+"$swap_size" -t 2:8200 -c 2:"$swap_name" "$disk" #> /dev/null
+  sgdisk -n 2:0:+"$swap_size" -t 2:8200 -c 2:"$swap_name" "$disk" > /dev/null
   print_done
   root_partition_num=3
 fi
@@ -75,5 +75,18 @@ fi
 echo -n "Creating root partition of size $root_size.. "
 # If 'root_size' is 'fill' then change it to '0' which will have sgdisk fill all space
 if [ "$root_size" == 'fill' ]; then root_size="0"; fi;
-sgdisk -n "$root_partition_num":0:"$root_size" -t "$root_partition_num":8300 -c "$root_partition_num":"$root_name" "$disk" #> /dev/null
+sgdisk -n "$root_partition_num":0:"$root_size" -t "$root_partition_num":8300 -c "$root_partition_num":"$root_name" "$disk" > /dev/null
 print_done
+
+echo "Creating filesystems.. "
+# For NVME disks we need to insert a 'p' before the partition number, but not for others.
+# eg.  /dev/nvme0n1p1 vs /dev/sda1
+partition_char=""
+if [[ "$disk" =~ 'nvme' ]]; then
+  partition_char="p"
+fi
+mkfs.fat -F 32 -n "$boot_name" "$disk$partition_char1"
+mkfs.btrfs -f -L "$root_name" "$disk$partition_char$root_partition_num"
+if [ "$swap_type" == 'partition' ]; then
+  mkswap -L "$swap_name" "$disk$partition_char2"
+fi
