@@ -46,11 +46,7 @@ EOM
 fi
 echo -n "Checking that $disk exists.. "
 stat "$disk" > /dev/null 2>&1 || fail "$disk was not found with 'stat' command, ensure you entered the correct path."
-echo "DONE"
-
-# Calculate partition sizes
-disk_size=$(lsblk -b --output SIZE -n -d "$disk")
-echo "Total disk size is $disk_size bytes"
+print_done
 
 echo "CONTINUING WILL DESTROY ANY DATA ON THE TARGET INSTALLATION DISK"
 read -p "Are you sure you want to continue (Y/N): " confirmation
@@ -63,4 +59,21 @@ echo "Creating partitions on $disk.."
 # These are spammy so ignore their outputs
 sgdisk --zap-all "$disk"
 sgdisk --set-alignment=2048 --clear "$disk"
-sg
+echo -n "Creating boot partition of size $boot_size.. "
+sgdisk -n 1:0:+"$boot_size" -t 1:ef00 -c 1:"$boot_name" "$disk" > /dev/null
+print_done
+
+# Track root partition number, as it will be '2' without a swap partition, but 3 if one was created.
+root_partition_num=2
+if [ "$swap_type" == 'partition' ]; then
+  echo -n "Creating swap partition of size $swap_size.. "
+  sgdisk -n 2:0:+"$swap_size" -t 2:8200 -c 2:"$swap_name" "$disk" > /dev/null
+  print_done
+  root_partition_num=3
+fi
+
+echo -n "Creating root partition of size $root_size.. "
+# If 'root_size' is 'fill' then change it to '0' which will have sgdisk fill all space
+if [ "$root_size" == 'fill' ]; then root_size="0"; fi;
+sgdisk -n "$root_partition_num":0:"$root_size" -t "$root_partition_num":8300 -c "$root_partition_num":"$root_name" "$disk" > /dev/null
+print_done
