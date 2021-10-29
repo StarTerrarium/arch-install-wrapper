@@ -46,9 +46,9 @@ EOM
   read -p "Enter the target installation disk: " disk
 fi
 echo -n "Checking that $disk exists.. "
-stat "$disk" > /dev/null
+stat "$disk" > /dev/null || (echo "FAILED" && exit 1)
 echo "DONE"
-echo "PROCEEDING IS DESTRUCTIVE.  CONTINUING WILL DESTROY ANY DATA ON THE TARGET INSTALLATION DISK"
+echo "CONTINUING WILL DESTROY ANY DATA ON THE TARGET INSTALLATION DISK"
 read -p "Are you sure you want to continue (Y/N): " confirmation
 if [[ ! "$confirmation" =~ ^[yY]$ ]]; then
   echo "Understandable.  Ending installation attempt."
