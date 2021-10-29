@@ -16,7 +16,7 @@ function print_failed {
 # Prints the red "FAILED" and optionally an extra message before exiting the script.
 function fail {
   print_failed
-  if [ ! -z "$1" ]; then
+  if [ -n "$1" ]; then
     echo "$1"
   fi
   exit 1
