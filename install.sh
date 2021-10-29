@@ -22,7 +22,7 @@ EOM
 # This might not work as expected given all the chroot goodness..  May need to re-source inside
 # scripts, or pass in as args.
 set -a
-source ./customisation.conf
+source ./default.conf
 set +a
 
 ./0-base.sh

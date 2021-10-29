@@ -19,6 +19,8 @@ so it would be possible to drop in any saved configuration you like.
 
 So what is the base setup with no customisation?
 
+
+
 ## Customisation
 
 Customisation is done vie editing the `customisation.conf` file.  Below are the supported values

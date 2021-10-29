@@ -5,6 +5,12 @@
 # selecting fast mirrors & running initial pacstrap.
 #
 
+cat <<EOM
+===============================================
+    0-base - Setting up base Arch system
+===============================================
+EOM
+
 # Check network connectivity.  Assuming it's working if this script has been downloaded, but just in case..
 echo -n "Checking for network connectivity..   "
 if ping -q -c 1 -W 1 archlinux.org > /dev/null; then
@@ -23,3 +29,11 @@ until [ "$(systemctl is-active reflector.service)" = 'inactive' ]; do
   sleep 10
 done
 echo "Reflector has finished ranking mirrors!"
+
+if [ "$disk" = 'prompt' ]; then
+  lsblk -p
+  read -p "Enter the target installation disk: " disk
+fi
+# Ensure target disk exists
+echo "Selected $disk as installation disk"
+stat "$disk"
