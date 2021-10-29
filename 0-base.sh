@@ -16,8 +16,7 @@ echo -n "Checking for network connectivity.. "
 if ping -q -c 1 -W 1 archlinux.org > /dev/null; then
   print_done
 else
-  echo "Failed.  Try using iwctl to configure your network."
-  exit 1
+  fail "Try using iwctl to configure your network."
 fi
 
 timedatectl set-ntp true
@@ -46,7 +45,7 @@ EOM
   read -p "Enter the target installation disk: " disk
 fi
 echo -n "Checking that $disk exists.. "
-stat "$disk" > /dev/null 2>&1 || { print_failed; exit 1; }
+stat "$disk" > /dev/null 2>&1 || { fail }
 echo "DONE"
 echo "CONTINUING WILL DESTROY ANY DATA ON THE TARGET INSTALLATION DISK"
 read -p "Are you sure you want to continue (Y/N): " confirmation

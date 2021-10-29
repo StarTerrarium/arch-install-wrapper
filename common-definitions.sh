@@ -12,3 +12,12 @@ function print_done {
 function print_failed {
   echo -e "${RED}FAILED${NC}"
 }
+
+# Prints the red "FAILED" and optionally an extra message before exiting the script.
+function fail {
+  print_failed
+  if [ -z "$1" ]; then
+    echo "$1"
+  fi
+  exit 1
+}
