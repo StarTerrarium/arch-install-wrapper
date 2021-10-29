@@ -23,6 +23,7 @@ EOM
 # scripts, or pass in as args.
 set -a
 source ./default.conf
+source ./common-definitions.sh
 set +a
 
 ./0-base.sh

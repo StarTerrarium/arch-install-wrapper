@@ -14,7 +14,7 @@ EOM
 # Check network connectivity.  Assuming it's working if this script has been downloaded, but just in case..
 echo -n "Checking for network connectivity.. "
 if ping -q -c 1 -W 1 archlinux.org > /dev/null; then
-  echo "DONE"
+  print_done
 else
   echo "Failed.  Try using iwctl to configure your network."
   exit 1
@@ -30,7 +30,7 @@ until [ "$(systemctl is-active reflector.service)" = 'inactive' ]; do
   echo
   echo -n "Waiting for Reflector to finish ranking mirrors.. "
 done
-echo "DONE"
+print_done
 
 
 if [ "$disk" = 'prompt' ]; then
@@ -46,7 +46,7 @@ EOM
   read -p "Enter the target installation disk: " disk
 fi
 echo -n "Checking that $disk exists.. "
-stat "$disk" > /dev/null 2>&1 || { echo "FAILED"; exit 1; }
+stat "$disk" > /dev/null 2>&1 || { print_failed; exit 1; }
 echo "DONE"
 echo "CONTINUING WILL DESTROY ANY DATA ON THE TARGET INSTALLATION DISK"
 read -p "Are you sure you want to continue (Y/N): " confirmation
