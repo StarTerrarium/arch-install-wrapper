@@ -14,7 +14,7 @@ EOM
 # Check network connectivity.  Assuming it's working if this script has been downloaded, but just in case..
 echo -n "Checking for network connectivity.. "
 if ping -q -c 1 -W 1 archlinux.org > /dev/null; then
-  echo "✔️"
+  echo "DONE️"
 else
   echo "Failed.  Try using iwctl to configure your network."
   exit 1
@@ -30,7 +30,7 @@ until [ "$(systemctl is-active reflector.service)" = 'inactive' ]; do
   echo
   echo -n "Waiting for Reflector to finish ranking mirrors.. "
 done
-echo "✔️"
+echo "DONE️"
 
 
 if [ "$disk" = 'prompt' ]; then
@@ -47,4 +47,4 @@ EOM
 fi
 echo "Checking that $disk exists.. "
 stat "$disk" > /dev/null
-echo "✔️"
+echo "DONE"
