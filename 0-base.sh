@@ -14,7 +14,7 @@ EOM
 # Check network connectivity.  Assuming it's working if this script has been downloaded, but just in case..
 echo -n "Checking for network connectivity.. "
 if ping -q -c 1 -W 1 archlinux.org > /dev/null; then
-  echo "✔"
+  echo "✔️"
 else
   echo "Failed.  Try using iwctl to configure your network."
   exit 1
@@ -30,7 +30,7 @@ until [ "$(systemctl is-active reflector.service)" = 'inactive' ]; do
   echo
   echo -n "Waiting for Reflector to finish ranking mirrors.. "
 done
-echo "✔"
+echo "✔️"
 
 
 if [ "$disk" = 'prompt' ]; then
@@ -45,6 +45,6 @@ EOM
   lsblk -p
   read -p "Enter the target installation disk: " disk
 fi
-# Ensure target disk exists
-echo "Selected $disk as installation disk"
-stat "$disk" | /dev/null
+echo "Checking that $disk exists.. "
+stat "$disk" > /dev/null
+echo "✔️"
