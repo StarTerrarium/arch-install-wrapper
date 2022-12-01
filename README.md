@@ -1,3 +1,6 @@
+# Not Maintained
+This script is no longer maintained as I have been solidly using Fedora desktop for the last year.  It may still be valuable as a reference point though.
+
 # Arch Install Wrapper
 
 My personal Arch Linux install script.  It takes an opinionated approach to installing Arch, with some moderate
